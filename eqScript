@@ -1,0 +1,26 @@
+
+
+# Initialising gobject/dbus support for threading
+import gobject
+import os
+import time
+
+goobject.threads_init()
+
+from dbus import glib
+glib.init_threads()
+
+#Creating session bus.
+import dbus
+bus = dbus.SessionBus()
+
+#Creating proxy object for remote object
+remote_object = bus.get_object("org.kde.kstars", #Connection name
+                                "/KStars/INDI" #Object path
+                                )
+
+#Get XML document of methods supported by interface
+print ("Introspection data: \n")
+print remote_object.Introspect()
+
+

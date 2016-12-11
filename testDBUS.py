@@ -38,7 +38,7 @@ remote_object = bus.get_object("org.kde.kstars", # Connection name
 # Get INDI interface
 iface = dbus.Interface(remote_object, 'org.kde.kstars.INDI')
 
-myDevices = [ "indi_eqmod_telescope", "indi_gphoto_ccd"]
+myDevices = [ "indi_eqmod_telescope"]
 
 #start INDI devices
 iface.start("7624", myDevices)
@@ -72,10 +72,26 @@ signal.alarm(0)
 print ("We received the following devices:")
 for device in devices:
     print device
-sleep (30)
+
+# Set connect switch to ON to connect the devices
+iface.setSwitch("EQMod Mount", "CONNECTION", "CONNECT", "On")
+# Send the switch to INDI server so that it gets processed by the driver
+iface.sendProperty("EQMod Mount", "CONNECTION")
+
+telescopeState = "Busy"
+
+# Wait until devices are connected
+while True:
+    telescopeState = iface.getPropertyState("EQMod Mount", "CONNECTION")
+    if (telescopeState != "Ok"):
+        time.sleep(1)
+    else:
+        break
+
+print "Connected to Telescope and CCD is established."
 
 
-
+time.sleep(30)
 
 
 # Stop INDI server

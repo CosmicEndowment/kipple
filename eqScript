@@ -23,4 +23,26 @@ remote_object = bus.get_object("org.kde.kstars", #Connection name
 print ("Introspection data: \n")
 print remote_object.Introspect()
 
+#INDI interface
+iface = dbus.Interface(remote_object, 'org.kde.kstars.INDI')
+
+myDevices = [ "indi_simulator_telescope", "indi_simulator_ccd" ]
+
+#Initialising array of detected INDI devices
+iface.start("7634", myDevices)
+print "Waiting for INDI devices..."
+devices = []
+
+while True:
+    devices = iface.getDevices()
+    if (len(devices) < len(myDevices)):
+        time.sleep(1)
+    else:
+        break;
+
+print "The following devices were detected:"
+for device in devices
+    print device
+
+
 

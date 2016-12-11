@@ -5,7 +5,7 @@ import gobject
 import os
 import time
 
-goobject.threads_init()
+gobject.threads_init()
 
 from dbus import glib
 glib.init_threads()

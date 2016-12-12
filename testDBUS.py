@@ -30,10 +30,10 @@ remote_object = bus.get_object("org.kde.kstars", # Connection name
                                "/KStars/INDI" # Object's path
                               )
  
-# Introspection returns an XML document containing information
-# about the methods supported by an interface.
-#print ("Introspection data:\n")
-#print remote_object.Introspect()
+#Introspection returns an XML document containing information
+#about the methods supported by an interface.
+print ("Introspection data:\n")
+print remote_object.Introspect()
 
 # Get INDI interface
 iface = dbus.Interface(remote_object, 'org.kde.kstars.INDI')
@@ -42,7 +42,8 @@ myDevices = [ "indi_eqmod_telescope"]
 
 #start INDI devices
 iface.start("7624", myDevices)
-
+print ("Introspection data:\n")
+print iface.Introspect()
 print ("Waiting for INDI devices...")
 
 #Create array for recieved devices
